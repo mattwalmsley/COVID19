@@ -4,9 +4,7 @@ import numpy as np
 import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from matplotlib.dates import MO, TU, WE, TH, FR, SA, SU
-
-
+from matplotlib.dates import MO
 
 def printResults_Deaths(data):
     theJSON = json.loads(data)
@@ -29,7 +27,8 @@ def printResults_Deaths(data):
         plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
-        plt.ylabel('Cumulative Deaths for ' + str(location))
+        plt.ylabel('Cumulative Deaths') 
+        plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
     if location not in area_names:
@@ -52,7 +51,6 @@ def printResults_Cases(data):
             print(f"Area:{areaName}, Date:{specimenDate}, Daily New Cases:{dailyLabConfirmedCases}, Previously Reported Case:{previouslyReportedDailyCases}, Change:{changeInDailyCases}, Total Confirmed:{totalLabConfirmedCases}, Previously Reported Total Cases:{previouslyReportedTotalCases}, Change:{changeInTotalCases}, Daily total confirmed cases rate:{dailyTotalLabConfirmedCasesRate}")
             dates.append(specimenDate)
             cumulative_confirmed_cases.append(totalLabConfirmedCases)
-            area_name = areaName
     if location in area_names:
         x = [datetime.datetime.strptime(d, '%Y-%m-%d').date() for d in dates]
         y = cumulative_confirmed_cases
@@ -60,7 +58,8 @@ def printResults_Cases(data):
         plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
-        plt.ylabel('Cumulative Confirmed Cases for ' + str(location))
+        plt.ylabel('Cumulative Confirmed Cases')
+        plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
     if location not in area_names:
