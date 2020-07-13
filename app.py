@@ -28,7 +28,7 @@ def printResults_Deaths(data):
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
         plt.ylabel('Cumulative Deaths') 
-        plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
+        plt.title('Total Deaths in ' + str(location) + ': ' + str(cumulative_deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
     elif location not in area_names:
@@ -59,7 +59,7 @@ def printResults_Cases(data):
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
         plt.ylabel('Cumulative Confirmed Cases')
-        plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
+        plt.title('Total Cases in ' + str(location) + ': ' + str(cumulative_confirmed_cases[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
     elif location not in area_names:
@@ -72,7 +72,7 @@ def main():
 
     webUrl_Deaths = urllib.request.urlopen(urlData_Deaths)
     webUrl_Cases = urllib.request.urlopen(urlData_Cases)
-    print ("result code for deaths: " + str(webUrl_Deaths.getcode()) + "result code for cases: " + str(webUrl_Cases.getcode()))
+    print ("result code for deaths: " + str(webUrl_Deaths.getcode()) + " result code for cases: " + str(webUrl_Cases.getcode()))
     if (webUrl_Deaths.getcode() == 200 and webUrl_Cases.getcode() == 200):
         data_Deaths = webUrl_Deaths.read()
         data_Cases = webUrl_Cases.read()
@@ -82,7 +82,7 @@ def main():
         print("Cases:")
         printResults_Cases(data_Cases)
     else:
-        print ("Received an error from server, cannot retrieve results " + str(webUrl_Deaths.getcode()) + str(webUrl_Cases.getcode()))
+        print ("Received an error from server, cannot retrieve results " + str(webUrl_Deaths.getcode()), str(webUrl_Cases.getcode()))
 
 if __name__ == "__main__":
     location = input("Enter Country for Deaths or Borough for Cases:")
