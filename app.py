@@ -31,7 +31,7 @@ def printResults_Deaths(data):
         plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
-    if location not in area_names:
+    elif location not in area_names:
         print(str(location) + " not found")
 
 def printResults_Cases(data):
@@ -62,7 +62,7 @@ def printResults_Cases(data):
         plt.title(str(location) + ' - Last updated ' + str((datetime.datetime.strptime(dates[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')))
         plt.xlabel('Date')
         plt.show()
-    if location not in area_names:
+    elif location not in area_names:
         print(str(location) + " not found") 
   
 def main():
