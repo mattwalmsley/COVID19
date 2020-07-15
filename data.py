@@ -45,9 +45,10 @@ def printData_Deaths(data):
             print(f"Area:{areaName}, Date:{reportingDate}, Change:{dailyChangeInDeaths}, Cumulative Deaths:{cumulativeDeaths}")
             dates_Deaths.append(reportingDate)
             cumulative_Deaths.append(cumulativeDeaths)
+            
     if location not in area_Names_Deaths:
-            print(str(location) + " not found. Data not shown")
-
+        print(str(location) + " not found. Data not shown")
+        
 def printGraph_Deaths(data):
     if location in area_Names_Deaths:
         x = [datetime.datetime.strptime(d, '%Y-%m-%d').date() for d in dates_Deaths]
@@ -56,9 +57,9 @@ def printGraph_Deaths(data):
         plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
-        plt.ylabel('Cumulative Deaths', fontsize = 14, fontweight ='bold') 
-        plt.title('Total Deaths in ' + str(location) + ': ' + str(cumulative_Deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Deaths[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 18, fontweight ='bold')
-        plt.xlabel('Date', fontsize = 14, fontweight ='bold')
+        plt.ylabel('Cumulative Deaths', fontsize = 12, fontweight ='bold') 
+        plt.title('Total Deaths in ' + str(location) + ': ' + str(cumulative_Deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Deaths[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 12, fontweight ='bold')
+        plt.xlabel('Date', fontsize = 12, fontweight ='bold')
         plt.show()
     elif location not in area_Names_Deaths:
         print(str(location) + " not found. Graph not shown")
@@ -73,12 +74,20 @@ def printGraphPNG_Deaths(data):
         ax.xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         ax.plot(x,y)
         fig.autofmt_xdate()
-        ax.set_ylabel('Cumulative Deaths', fontsize = 14, fontweight ='bold') 
-        ax.set_title('Total Deaths in ' + str(location) + ': ' + str(cumulative_Deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Deaths[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 18, fontweight ='bold')
-        ax.set_xlabel('Date', fontsize = 14, fontweight ='bold')
+        ax.set_ylabel('Cumulative Deaths', fontsize = 12, fontweight ='bold') 
+        ax.set_title('Total Deaths in ' + str(location) + ': ' + str(cumulative_Deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Deaths[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 12, fontweight ='bold')
+        ax.set_xlabel('Date', fontsize = 12, fontweight ='bold')
         FigureCanvasAgg(fig).print_png(f'deaths_for_{location}.png', dpi=200)
-    elif location not in area_Names_Deaths:
+    if location not in area_Names_Deaths:
         print(str(location) + " not found. Graph PNG not shown")
+    if location not in area_Names_Cases and location not in area_Names_Deaths:
+        print("Please choose from the following:")
+        areas = []
+        for areaName,_,_,_ in deaths:
+            if areaName not in areas:
+                areas.append(areaName)
+        for area in sorted(areas):
+            print(area)
 
 def printData_Cases(data):
     for areaName, specimenDate, dailyLabConfirmedCases, previouslyReportedDailyCases, changeInDailyCases, totalLabConfirmedCases, \
@@ -89,7 +98,7 @@ def printData_Cases(data):
             dates_Cases.append(specimenDate)
             cumulative_Cases.append(totalLabConfirmedCases)
     if location not in area_Names_Cases:
-        print(str(location) + " not found. Data not shown")
+        print(str(location) + " not found. Data not shown")        
 
 def printGraph_Cases(data):
     if location in area_Names_Cases:
@@ -99,9 +108,9 @@ def printGraph_Cases(data):
         plt.gca().xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         plt.plot(x,y)
         plt.gcf().autofmt_xdate()
-        plt.ylabel('Cumulative Cases', fontsize = 14, fontweight ='bold')
-        plt.title('Total Cases in ' + str(location) + ': ' + str(cumulative_Cases[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Cases[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 18, fontweight ='bold')
-        plt.xlabel('Date', fontsize = 14, fontweight ='bold')
+        plt.ylabel('Cumulative Cases', fontsize = 12, fontweight ='bold')
+        plt.title('Total Cases in ' + str(location) + ': ' + str(cumulative_Cases[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Cases[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 12, fontweight ='bold')
+        plt.xlabel('Date', fontsize = 12, fontweight ='bold')
         plt.show()
     elif location not in area_Names_Cases:
         print(str(location) + " not found. Graph not shown")
@@ -116,28 +125,43 @@ def printGraphPNG_Cases(data):
         ax.xaxis.set_major_locator(mdates.WeekdayLocator(MO))
         ax.plot(x,y)
         fig.autofmt_xdate()
-        ax.set_ylabel('Cumulative Cases', fontsize = 14, fontweight ='bold') 
-        ax.set_title('Total Cases in ' + str(location) + ': ' + str(cumulative_Cases[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Cases[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 18, fontweight ='bold')
-        ax.set_xlabel('Date', fontsize = 14, fontweight ='bold')
+        ax.set_ylabel('Cumulative Cases', fontsize = 12, fontweight ='bold') 
+        ax.set_title('Total Cases in ' + str(location) + ': ' + str(cumulative_Cases[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Cases[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 12, fontweight ='bold')
+        ax.set_xlabel('Date', fontsize = 12, fontweight ='bold')
         FigureCanvasAgg(fig).print_png(f'cases_for_{location}.png', dpi=200)
-    elif location not in area_Names_Cases:
+    if location not in area_Names_Cases:
         print(str(location) + " not found. Graph PNG not shown")
+    if location not in area_Names_Cases and location not in area_Names_Deaths:
+        print("Please choose from the following:")
+        areas = []
+        for areaName,_,_,_,_,_,_,_,_  in cases:
+            if areaName not in areas:
+                areas.append(areaName)
+        for area in sorted(areas):
+            print(area)
+        main()
   
 def main():
+    global location
+    location = input("Enter Country for Deaths or Borough for Cases:    ")
     print ("result code for deaths: " + str(webUrl_Deaths.getcode()) + " result code for cases: " + str(webUrl_Cases.getcode()))
     if (webUrl_Deaths.getcode() == 200 and webUrl_Cases.getcode() == 200):
         print("Deaths:")
         printData_Deaths(data_Deaths)
-        printGraphPNG_Deaths(data_Deaths)
         printGraph_Deaths(data_Deaths)
+        printGraphPNG_Deaths(data_Deaths)
         print ("--------------\n")
         print("Cases:")
         printData_Cases(data_Cases)
-        printGraphPNG_Cases(data_Cases)
         printGraph_Cases(data_Cases)
+        printGraphPNG_Cases(data_Cases)
+        again = input("Find data for another area? Enter Y/N    ")
+        if again.lower() == "y":
+            main()
+        else:
+            exit()
     else:
         print ("Received an error from server, cannot retrieve results " + str(webUrl_Deaths.getcode()), str(webUrl_Cases.getcode()))
 
 if __name__ == "__main__":
-    location = input("Enter Country for Deaths or Borough for Cases:")
     main()
