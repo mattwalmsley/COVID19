@@ -60,7 +60,6 @@ def printGraph_Deaths(data):
         plt.ylabel('Cumulative Deaths', fontsize = 12, fontweight ='bold') 
         plt.title('Total Deaths in ' + str(location) + ': ' + str(cumulative_Deaths[0]) + ' - Last updated ' + str((datetime.datetime.strptime(dates_Deaths[0], '%Y-%m-%d')).strftime('%a %d-%b-%Y')), fontsize = 12, fontweight ='bold')
         plt.xlabel('Date', fontsize = 12, fontweight ='bold')
-        plt.show()
     elif location not in area_Names_Deaths:
         print(str(location) + " not found. Graph not shown")
 
@@ -155,13 +154,9 @@ def main():
         printData_Cases(data_Cases)
         printGraph_Cases(data_Cases)
         printGraphPNG_Cases(data_Cases)
-        again = input("Find data for another area? Enter Y/N    ")
-        if again.lower() == "y":
-            main()
-        else:
-            exit()
     else:
         print ("Received an error from server, cannot retrieve results " + str(webUrl_Deaths.getcode()), str(webUrl_Cases.getcode()))
+    exit()
 
 if __name__ == "__main__":
     main()
