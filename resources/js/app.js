@@ -124,7 +124,7 @@ function axesLinearChart(){
 }
 
 
-let user_area = []
+let user_area
 function findLocation() {
 	if(navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -133,7 +133,7 @@ function findLocation() {
 				return response.json();
 			})
 			.then (data => {
-			user_area.push(data.result[0].admin_district)
+			user_area = data.result[0].admin_district
 			})
 			.then(() => fetchData(user_area))
 			.catch( error => {
