@@ -117,6 +117,7 @@ main{
 }
 
 .change-area{
+    font-size: 12pt;
     cursor: pointer;
     color: rgba(255,255,255,0.5);
 }
@@ -124,13 +125,24 @@ main{
     color: rgba(255,255,255,1);
 }
 
-.current-location{
+.current-location .title{
     cursor: pointer;
+    font-size: 12pt;
     color: rgba(255,255,255,0.5);
     padding-top: 10px;
 }
-.current-location:hover{
-    color: rgba(255,255,255,1);
+.current-location img{
+    width: 20px;
+    padding-left: 2px;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: 0.5;
+}
+.current-location .title:hover{ 
+    color: rgba(255,255,255,1);    
+}
+.current-location .title:hover img{
+    opacity: 1;
 }
 
 .title{
