@@ -1,19 +1,22 @@
 const area_name_element = document.querySelector(".area .name");
-const total_cases_element = document.querySelector(".total-cases .value");
 const daily_cases_element = document.querySelector(".daily-cases .value");
+const uk_cases_daily_element = document.querySelector(".daily-cases .uk-cases-daily");
 const total_active_element = document.querySelector(".active .value");
 const old_active_element = document.querySelector(".active .old-value");
+const total_cases_element = document.querySelector(".total-cases .value");
+const uk_cases_total_element = document.querySelector(".total-cases .uk-cases-total");
 const days_element = document.querySelector(".days .value");
-const last_updated_element = document.querySelector(".last-updated .value")
+const last_updated_element = document.querySelector(".last-updated .value");
+
 
 const ctx = document.getElementById("axes_line_chart").getContext("2d");
 
 var specimenDates = [],
 	dailyCases = [],
 	totalCases = [];
-
-
-
+var lastUpdate,
+	ukCasesDaily,
+	ukCasesTotal;
 
 function updateUI(area){
 	updateStats(area);
@@ -30,8 +33,6 @@ function updateStats(area) {
 	function checkCases(cases) {return cases > 0};
 	let days_without_case = dailyCases.indexOf(dailyCases.find(checkCases));
 
-	let last_updated = moment(specimenDates[0]).format("MMMM Do YYYY");
-
 	area_name_element.innerHTML = area;
 
 	function thousands_separators(num) {
@@ -40,17 +41,22 @@ function updateStats(area) {
 		return num_parts.join(".");
 	}
 
-	total_cases_element.innerHTML = thousands_separators(latest_entry_totalCases);
 	daily_cases_element.innerHTML = thousands_separators(latest_entry_totalCases - previous_entry_totalCases);
+	uk_cases_daily_element.innerHTML = ("(UK: " + thousands_separators(ukCasesDaily) + ")");
 
 	total_active_element.innerHTML = thousands_separators(active_cases);
 	old_active_element.innerHTML = (thousands_separators(active_cases_last_week) + " Last Week");
+
+	total_cases_element.innerHTML = thousands_separators(latest_entry_totalCases);
+	uk_cases_total_element.innerHTML = ("(UK: " + thousands_separators(ukCasesTotal) + ")");
+
+	
 	
 	if (days_without_case === 1){days = " Day"}else days = " Days";
 	if (days_without_case === -1){days_without_case = 0}
 	days_element.innerHTML = ((days_without_case) + days);
 
-	last_updated_element.innerHTML = ("Last Updated " + last_updated);
+	last_updated_element.innerHTML = ("Last Updated " + moment(lastUpdate).format(("MMMM Do YYYY, HH:mm")));
 }
 
 let my_chart;
@@ -150,6 +156,8 @@ function fetchData(area){
 	area_name_element.innerHTML = "Loading...";
 
 	specimenDates = [],	dailyCases = [], totalCases = [];
+	
+
 
 	fetch("https://c19downloads.azureedge.net/downloads/json/coronavirus-cases_latest.json")
 	.then( response => {
@@ -173,6 +181,11 @@ function fetchData(area){
 			boroughs_cases_data.push([entry.areaName, entry.specimenDate, entry.dailyLabConfirmedCases, entry.totalLabConfirmedCases])
 		});
 		
+		lastUpdate = moment(cases.metadata.lastUpdatedAt).format();
+		ukCasesDaily = cases.dailyRecords.dailyLabConfirmedCases;
+		ukCasesTotal = cases.dailyRecords.totalLabConfirmedCases;
+		console.log(lastUpdate, ukCasesDaily, ukCasesTotal);
+
 		var cases_data = england_cases_data.concat(regions_cases_data, boroughs_cases_data);
 
 		for ([areaName, specimenDate, dailyLabConfirmedCases, totalLabConfirmedCases] of cases_data) {
