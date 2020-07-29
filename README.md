@@ -27,3 +27,5 @@ Deaths: https://c19downloads.azureedge.net/downloads/json/coronavirus-deaths_lat
 Disclaimer: Disclaimer: Deaths and lab-confirmed case counts and rates for England and subnational areas are provided by Public Health England. 
             All data for the rest of the UK are provided by the devolved administrations. Maps include Ordnance Survey data \u00a9 Crown 
             copyright and database right 2020 and Office for National Statistics data \u00a9 Crown copyright and database right 2020.
+            
+All images used are 'royalty-free' and deemed not need accreditation.
