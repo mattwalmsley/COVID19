@@ -46,7 +46,9 @@ input.addEventListener("input", function(){
     let value = input.value.toUpperCase();
 
     area_list_cases.forEach( area => {
-        if( area.toUpperCase().startsWith(value)){
+        if(area.toUpperCase().startsWith(value)){
+            document.getElementById(area).classList.remove("hide")}
+        else if(area.toUpperCase().includes(" " + value)){
             document.getElementById(area).classList.remove("hide");
         }else{
             document.getElementById(area).classList.add("hide");
