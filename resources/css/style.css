@@ -142,10 +142,18 @@ main{
     font-weight: bold;
     color: rgba(255,255,0,0.75);
 }
+.total-cases .uk-cases-total{
+    font-size: 12pt;
+    color: rgba(44,130,201,1);
+}
 .daily-cases .value{
     font-size: 16pt;
     font-weight: bold;
     color: rgba(255,0,0,0.75);
+}
+.daily-cases .uk-cases-daily{
+    font-size: 12pt;
+    color: rgba(44,130,201,1);
 }
 .active .value{
     font-size: 16pt;
