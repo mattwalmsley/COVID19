@@ -126,6 +126,7 @@ function axesLinearChart(){
 
 let user_area
 function findLocation() {
+	user_area = 0;
 	if(navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition(function(position) {
 			fetch("https://api.postcodes.io/postcodes?lon=" + position.coords.longitude + "&lat=" + position.coords.latitude)
@@ -133,7 +134,7 @@ function findLocation() {
 				return response.json();
 			})
 			.then (data => {
-			user_area = data.result[0].admin_district
+			user_area = data.result[0].admin_district;
 			})
 			.then(() => fetchData(user_area))
 			.catch( error => {
