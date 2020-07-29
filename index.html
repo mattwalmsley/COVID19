@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./resources/css/style.css">
+  <title>UK Covid-19 Tracker</title>
+  <link rel="icon" type="image/png" href="./resources/images/favicon.png"/>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="./resources/images/logo.png" alt="">
+      <p>UK COVID-19 Tracker</p>
+    </div>
+    <div class="LinkedIn">
+      <a href="https://www.linkedin.com/in/matthew-walmsley/" target="_blank">
+        <img src="./resources/images/linkedin.png" alt="LinkedIn">
+      </a>
+    </div>
+  </header>
+  <main>
+    <div class="stats">
+      <div class="latest-report">
+        <div class="area">
+          <div class="name">Loading...</div>
+          <div class="change-area">Change</div>
+          <div class="current-location" onclick="findLocation();">Use Current Location</div>
+          <div class="search-area hide">
+            <div class="search-box">
+              <input type="text" id="search-input" placeholder="Search Areas...">
+              <img class="close" src="./resources/images/close.svg" alt="">
+            </div>
+            <div class="area-list-cases">
+            </div>
+          </div>
+        </div>
+        <div class="daily-cases">
+          <div class="title">Daily Cases</div>
+          <div class="value">0</div>
+        </div>
+        <div class="active">
+          <div class="title">Active Cases</div>
+          <div class="value">0</div>
+          <div class="old-value"></div>
+        </div>
+        <div class="total-cases">
+          <div class="title">Total Cases</div>
+          <div class="value">0</div>
+        </div>
+        <div class="days">
+          <div class="title">No Confirmed Cases For</div>
+          <div class="value">0 Days</div>
+        </div>
+      </div>
+      <div class="chart">
+        <canvas id="axes_line_chart"></canvas>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-container">
+      <br>
+      <div class="last-updated">
+        <div class="value">Last Updated...</div>
+      </div>
+      <br>
+      <div class="data-source">
+        <p>Data provided by Public Health England.</p>
+      </div>
+      <br>
+      <div class="active-cases-definiton">
+        <p>Active Cases defined as the total number of lab confirmed cases in the past seven days.</p>
+      </div>
+      <br>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
+  <script>
+      moment().format();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+  <script src="resources/js/countries.js"></script>
+  <script src="resources/js/app.js"></script>
+</body>
+</html>
