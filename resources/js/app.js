@@ -184,7 +184,6 @@ function fetchData(area){
 		lastUpdate = moment(cases.metadata.lastUpdatedAt).format();
 		ukCasesDaily = cases.dailyRecords.dailyLabConfirmedCases;
 		ukCasesTotal = cases.dailyRecords.totalLabConfirmedCases;
-		console.log(lastUpdate, ukCasesDaily, ukCasesTotal);
 
 		var cases_data = england_cases_data.concat(regions_cases_data, boroughs_cases_data);
 
