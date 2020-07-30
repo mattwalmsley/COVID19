@@ -28,4 +28,4 @@ Disclaimer: Disclaimer: Deaths and lab-confirmed case counts and rates for Engla
             All data for the rest of the UK are provided by the devolved administrations. Maps include Ordnance Survey data \u00a9 Crown 
             copyright and database right 2020 and Office for National Statistics data \u00a9 Crown copyright and database right 2020.
             
-All images used are 'royalty-free' and deemed not need accreditation.
+All images used are 'royalty-free' and deemed not to need accreditation.
