@@ -118,6 +118,7 @@ main{
 }
 
 .change-area{
+    width: 55px;
     font-size: 12pt;
     cursor: pointer;
     color: rgba(255,255,255,0.5);
@@ -126,6 +127,9 @@ main{
     color: rgba(255,255,255,1);
 }
 
+.current-location{
+    width: 180px;
+}
 .current-location .title{
     cursor: pointer;
     font-size: 12pt;
