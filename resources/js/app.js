@@ -239,7 +239,7 @@ function findBySearch(searchTerm) {
 		.catch( error => {
 			fetchData("England");
 			console.log("Error:", error);
-			location_result_element.innerHTML = (searchTerm + " not found.");
+			location_result_element.innerHTML = (searchTerm + " Not Found");
 		});
 	}
 }
