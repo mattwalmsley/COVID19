@@ -7,7 +7,8 @@ const total_cases_element = document.querySelector(".total-cases .value");
 const uk_cases_total_element = document.querySelector(".total-cases .uk-cases-total");
 const days_element = document.querySelector(".days .value");
 const last_updated_element = document.querySelector(".last-updated .value");
-
+const location_result_element = document.querySelector(".location-result .value");
+const go_btn = document.querySelector(".go");
 
 const ctx = document.getElementById("axes_line_chart").getContext("2d");
 
@@ -17,6 +18,8 @@ var specimenDates = [],
 var lastUpdate,
 	ukCasesDaily,
 	ukCasesTotal;
+
+fetchData(area = "England")
 
 function updateUI(area){
 	updateStats(area);
@@ -129,35 +132,11 @@ function axesLinearChart(){
 	});
 }
 
-
-let user_area
-function findLocation() {
-	if(navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position) {
-			fetch("https://api.postcodes.io/postcodes?lon=" + position.coords.longitude + "&lat=" + position.coords.latitude)
-			.then( response => {
-				return response.json();
-			})
-			.then (data => {
-			user_area = data.result[0].admin_district;
-			})
-			.then(() => fetchData(user_area))
-			.catch( error => {
-				console.log("Error:", error);
-				fetchData("England");
-			});
-		});
-	}
-	else {fetchData("England");
-	};
-};
-
 function fetchData(area){
+	location_result_element.innerHTML = null;
 	area_name_element.innerHTML = "Loading...";
 
 	specimenDates = [],	dailyCases = [], totalCases = [];
-	
-
 
 	fetch("https://c19downloads.azureedge.net/downloads/json/coronavirus-cases_latest.json")
 	.then( response => {
@@ -188,12 +167,15 @@ function fetchData(area){
 		var cases_data = england_cases_data.concat(regions_cases_data, boroughs_cases_data);
 
 		for ([areaName, specimenDate, dailyLabConfirmedCases, totalLabConfirmedCases] of cases_data) {
-			if (areaName == area) {
+			if (areaName.toLowerCase() == area.toLowerCase()) {
 				specimenDates.push(moment(specimenDate, "YYYY-MM-DD"));
 				dailyCases.push(parseInt(dailyLabConfirmedCases));
 				totalCases.push(totalLabConfirmedCases);
+				area = areaName
+				
 			}
-		} return area
+		}
+		return area
 	})
 	.then(() => {
 		updateUI(area);
@@ -203,4 +185,61 @@ function fetchData(area){
 	});
 };
 
-fetchData(area = "England");
+let user_area
+function findLocation() {
+	if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			fetch("https://api.postcodes.io/postcodes?lon=" + position.coords.longitude + "&lat=" + position.coords.latitude)
+			.then( response => {
+				return response.json();
+			})
+			.then (data => {
+			user_area = data.result[0].admin_district;
+			})
+			.then(() => fetchData(user_area))
+			.catch( error => {
+				console.log("Error:", error);
+				fetchData("England");
+			});
+		});
+	}
+	else {fetchData("England");
+	};
+};
+
+function pressEnter(event){
+	var key=event.keyCode || event.which;
+	 if (key==13){
+		findBySearch(input.value);
+		search_area_element.classList.toggle("hide");
+	 }
+   }
+
+go_btn.addEventListener("click", function(){
+	findBySearch(input.value);
+	search_area_element.classList.toggle("hide");
+});	
+
+
+function findBySearch(searchTerm) {
+	let postcode = searchTerm.replace(/\s/g, '');
+	let area_list_cases_lower = area_list_cases.map(area => area.toLowerCase());
+	if(area_list_cases_lower.includes(searchTerm.toLowerCase())){
+				fetchData(searchTerm)
+	}
+	else {
+		fetch("https://api.postcodes.io/postcodes/" + postcode)
+		.then( response => {
+			return response.json();
+		})
+		.then (data => {
+			areaByPostcode = data.result.admin_district;
+		})
+		.then(() => fetchData(areaByPostcode))
+		.catch( error => {
+			fetchData("England");
+			console.log("Error:", error);
+			location_result_element.innerHTML = (searchTerm + " not found.");
+		});
+	}
+}
