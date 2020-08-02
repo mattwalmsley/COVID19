@@ -191,7 +191,16 @@ main{
 .days .value{
     font-size: 16pt;
     font-weight: bold;
-    color: rgba(50,205,50,0.75);
+    color: #FFF;
+}
+.days .increasing{
+    font-size: 12pt;
+    color: rgba(255,0,0,0.75);
+}
+
+.days .decreasing{
+    font-size: 12pt;
+    color: rgb(0,255,0,0.75);
 }
 
 .chart{
@@ -308,7 +317,7 @@ footer{
     font-size: 20px;
 }
 
-.active-cases-definiton{
+.definitons{
     height: 100%;
     color: #FFF;
     display: flex;
