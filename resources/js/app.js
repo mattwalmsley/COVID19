@@ -11,6 +11,7 @@ const location_result_element = document.querySelector(".location-result .value"
 const go_btn = document.querySelector(".go");
 const increasing_element = document.querySelector(".days .increasing");
 const decreasing_element = document.querySelector(".days .decreasing");
+const no_change_element = document.querySelector(".days .no-change");
 
 const ctx = document.getElementById("axes_line_chart").getContext("2d");
 
@@ -31,6 +32,7 @@ function updateUI(area){
 function updateStats(area) {
 	increasing_element.innerHTML = null;
 	decreasing_element.innerHTML = null;
+	no_change_element.innerHTML = null;
 
 	let latest_entry_totalCases = totalCases[0];
 	let previous_entry_totalCases = totalCases[1];
@@ -77,6 +79,10 @@ function updateStats(area) {
 	if (percentage_change < 0){
 	decreasing_element.innerHTML = (-1*percentage_change.toFixed(2) + "% Decrease in Daily Cases");
 	}
+
+	if (percentage_change === 0){
+		no_change_element.innerHTML = ("No % Change in Daily Cases");
+		}
 
 	last_updated_element.innerHTML = ("Last Updated " + moment(lastUpdate).format(("MMMM Do YYYY, HH:mm")));
 }

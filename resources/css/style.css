@@ -197,10 +197,13 @@ main{
     font-size: 12pt;
     color: rgba(255,0,0,0.75);
 }
-
 .days .decreasing{
     font-size: 12pt;
     color: rgb(0,255,0,0.75);
+}
+.days .no-change{
+    font-size: 12pt;
+    color: #FFF;
 }
 
 .chart{
