@@ -9,6 +9,8 @@ const days_element = document.querySelector(".days .value");
 const last_updated_element = document.querySelector(".last-updated .value");
 const location_result_element = document.querySelector(".location-result .value");
 const go_btn = document.querySelector(".go");
+const increasing_element = document.querySelector(".days .increasing");
+const decreasing_element = document.querySelector(".days .decreasing");
 
 const ctx = document.getElementById("axes_line_chart").getContext("2d");
 
@@ -27,6 +29,9 @@ function updateUI(area){
 }
 
 function updateStats(area) {
+	increasing_element.innerHTML = null;
+	decreasing_element.innerHTML = null;
+
 	let latest_entry_totalCases = totalCases[0];
 	let previous_entry_totalCases = totalCases[1];
 
@@ -56,8 +61,22 @@ function updateStats(area) {
 	
 	
 	if (days_without_case === 1){days = " Day"}else days = " Days";
-	if (days_without_case === -1){days_without_case = 0}
+	if (days_without_case === -1){days_without_case = 0};
 	days_element.innerHTML = ((days_without_case) + days);
+
+	active_cases_two_weeks_ago = dailyCases.slice(14,21).reduce(function(a, b){return a + b}, 0);
+	active_cases_three_weeks_ago = dailyCases.slice(21,28).reduce(function(a, b){return a + b}, 0);
+	active_cases_four_weeks_ago = dailyCases.slice(28,35).reduce(function(a, b){return a + b}, 0);
+
+	percentage_change =  100 * ( ((active_cases_last_week + active_cases_two_weeks_ago) / 14) - ((active_cases_three_weeks_ago + active_cases_four_weeks_ago) / 14) ) / ((active_cases_three_weeks_ago + active_cases_four_weeks_ago) / 14);
+
+	if (percentage_change > 0){
+		increasing_element.innerHTML = (percentage_change.toFixed(2) + "% Increase in Daily Cases");
+	}
+
+	if (percentage_change < 0){
+	decreasing_element.innerHTML = (-1*percentage_change.toFixed(2) + "% Decrease in Daily Cases");
+	}
 
 	last_updated_element.innerHTML = ("Last Updated " + moment(lastUpdate).format(("MMMM Do YYYY, HH:mm")));
 }
