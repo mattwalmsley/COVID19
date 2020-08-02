@@ -312,26 +312,29 @@ footer{
 .last-updated{
     height: 100%;
     color: #FFF;
-    display: flex;
     align-items: center;
     font-size: 20px;
 }
-
-.definitons{
-    height: 100%;
-    color: #FFF;
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-}
-
 .data-source{
     height: 100%;
     color: #FFF;
-    display: flex;
     align-items: center;
     font-size: 12px;
 }
+.active-cases-definiton{
+    height: 100%;
+    color: #FFF;
+    align-items: center;
+    font-size: 12px;
+}
+.percentage-change-definiton{
+    height: 100%;
+    color: #FFF;
+    align-items: center;
+    font-size: 12px;
+}
+
+
 
 
 @media screen and (max-width: 600px){
