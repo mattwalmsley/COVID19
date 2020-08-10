@@ -18,24 +18,26 @@ const ctx = document.getElementById("axes_line_chart").getContext("2d");
 var specimenDates = [],
 	dailyCases = [],
 	totalCases = [];
-var lastUpdate,
+
+var areaName,
+	url,
+	lastUpdate,
 	ukCasesDaily,
 	ukCasesTotal;
 
 fetchData(area = "England")
 
-function updateUI(area){
-	updateStats(area);
+function updateUI(){
+	updateStats();
 	axesLinearChart();
 }
 
-function updateStats(area) {
+function updateStats() {
 	increasing_element.innerHTML = null;
 	decreasing_element.innerHTML = null;
 	no_change_element.innerHTML = null;
 
 	let latest_entry_totalCases = totalCases[0];
-	let previous_entry_totalCases = totalCases[1];
 
 	let active_cases = dailyCases.slice(0,7).reduce(function(a, b){return a + b}, 0);
 	let active_cases_last_week = dailyCases.slice(7,14).reduce(function(a, b){return a + b}, 0);
@@ -43,7 +45,7 @@ function updateStats(area) {
 	function checkCases(cases) {return cases > 0};
 	let days_without_case = dailyCases.indexOf(dailyCases.find(checkCases));
 
-	area_name_element.innerHTML = area;
+	area_name_element.innerHTML = areaName;
 
 	function thousands_separators(num) {
 		var num_parts = num.toString().split(".");
@@ -51,7 +53,7 @@ function updateStats(area) {
 		return num_parts.join(".");
 	}
 
-	daily_cases_element.innerHTML = thousands_separators(latest_entry_totalCases - previous_entry_totalCases);
+	daily_cases_element.innerHTML = thousands_separators(dailyCases[0]);
 	uk_cases_daily_element.innerHTML = ("(UK: " + thousands_separators(ukCasesDaily) + ")");
 
 	total_active_element.innerHTML = thousands_separators(active_cases);
@@ -60,31 +62,29 @@ function updateStats(area) {
 	total_cases_element.innerHTML = thousands_separators(latest_entry_totalCases);
 	uk_cases_total_element.innerHTML = ("(UK: " + thousands_separators(ukCasesTotal) + ")");
 
-	
-	
 	if (days_without_case === 1){days = " Day"}else days = " Days";
 	if (days_without_case === -1){days_without_case = 0};
 	days_element.innerHTML = ((days_without_case) + days);
 
-	active_cases_two_weeks_ago = dailyCases.slice(14,21).reduce(function(a, b){return a + b}, 0);
-	active_cases_three_weeks_ago = dailyCases.slice(21,28).reduce(function(a, b){return a + b}, 0);
-	active_cases_four_weeks_ago = dailyCases.slice(28,35).reduce(function(a, b){return a + b}, 0);
+	active_cases_three_to_nine_days_ago = dailyCases.slice(3,10).reduce(function(a, b){return a + b}, 0);
+	active_cases_ten_to_sixteen_days_ago = dailyCases.slice(10,17).reduce(function(a, b){return a + b}, 0);
 
-	percentage_change =  100 * ( ((active_cases_last_week + active_cases_two_weeks_ago) / 14) - ((active_cases_three_weeks_ago + active_cases_four_weeks_ago) / 14) ) / ((active_cases_three_weeks_ago + active_cases_four_weeks_ago) / 14);
+	percentage_change =  100 * ( ( ( active_cases_three_to_nine_days_ago -  active_cases_ten_to_sixteen_days_ago ) / 7 ) / ( active_cases_ten_to_sixteen_days_ago / 7) );
 
 	if (percentage_change > 0){
-		increasing_element.innerHTML = (percentage_change.toFixed(2) + "% Increase in Daily Cases");
+		increasing_element.innerHTML = (percentage_change.toFixed(0) + "% Increase in Daily Cases");
 	}
 
 	if (percentage_change < 0){
-	decreasing_element.innerHTML = (-1*percentage_change.toFixed(2) + "% Decrease in Daily Cases");
+	decreasing_element.innerHTML = (-1*percentage_change.toFixed(0) + "% Decrease in Daily Cases");
 	}
 
 	if (percentage_change === 0){
 		no_change_element.innerHTML = ("No % Change in Daily Cases");
-		}
+	}
 
 	last_updated_element.innerHTML = ("Last Updated " + moment(lastUpdate).format(("MMMM Do YYYY, HH:mm")));
+
 }
 
 let my_chart;
@@ -161,46 +161,62 @@ function fetchData(area){
 	location_result_element.innerHTML = null;
 	area_name_element.innerHTML = "Loading...";
 
-	specimenDates = [],	dailyCases = [], totalCases = [];
+	specimenDates = [],	dailyCases = [], totalCases = [], url = null;
+	let ltla_lowercase = ltla.map(area => area.toLowerCase());
+	let regions_lowercase = regions.map(area => area.toLowerCase());
+	if(ltla_lowercase.includes(area.toLowerCase())){
+		url = (
+			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=ltla;areaName=' + 
+			area + 
+			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
+			)
+	}
+	else if(regions_lowercase.includes(area.toLowerCase())){
+		url = (
+			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=region;areaName=' + 
+			area + 
+			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
+			)
+	}
+	else if((area.toLowerCase()) === "england"){
+		url = (
+			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation;areaName=' + 
+			area + 
+			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
+			)
+	}
 
-	fetch("https://c19downloads.azureedge.net/downloads/json/coronavirus-cases_latest.json")
+	fetch('https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure={"newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate"}&latestBy=date')
 	.then( response => {
 		return response.json();
 	})
-	.then( cases => {
-		england_entries =  cases.countries;
-		region_entries =  cases.regions;
-		borough_entries = cases.ltlas;
+	.then( data => {
+		cases = data.data[0];
 
-		let england_cases_data = [];
-		england_entries.forEach( entry => {
-			england_cases_data.push([entry.areaName, entry.specimenDate, entry.dailyLabConfirmedCases, entry.totalLabConfirmedCases])
-		});
-		let regions_cases_data = [];
-		region_entries.forEach( entry => {
-			regions_cases_data.push([entry.areaName, entry.specimenDate, entry.dailyLabConfirmedCases, entry.totalLabConfirmedCases])
-		});
-		let boroughs_cases_data = [];
-		borough_entries.forEach( entry => {
-			boroughs_cases_data.push([entry.areaName, entry.specimenDate, entry.dailyLabConfirmedCases, entry.totalLabConfirmedCases])
-		});
-		
-		lastUpdate = moment(cases.metadata.lastUpdatedAt).format();
-		ukCasesDaily = cases.dailyRecords.dailyLabConfirmedCases;
-		ukCasesTotal = cases.dailyRecords.totalLabConfirmedCases;
+		ukCasesDaily = cases.newCasesByPublishDate;
+		ukCasesTotal = cases.cumCasesByPublishDate;
+	})
+	.then(() => fetch(url))
+	.then( response => {
+		lastUpdate = response.headers.get('Last-Modified');
+		return response.json();
+	})
+	.then( data => {
+		cases = data.data;
 
-		var cases_data = england_cases_data.concat(regions_cases_data, boroughs_cases_data);
+		areaName = cases[0].areaName;
 
-		for ([areaName, specimenDate, dailyLabConfirmedCases, totalLabConfirmedCases] of cases_data) {
-			if (areaName.toLowerCase() == area.toLowerCase()) {
-				specimenDates.push(moment(specimenDate, "YYYY-MM-DD"));
-				dailyCases.push(parseInt(dailyLabConfirmedCases));
-				totalCases.push(totalLabConfirmedCases);
-				area = areaName
-				
-			}
-		}
-		return area
+		cases.forEach( entry => {
+			specimenDates.push(moment(entry.date, "YYYY-MM-DD"))
+		});
+
+		cases.forEach( entry => {
+			dailyCases.push(entry.newCasesBySpecimenDate)
+		});
+
+		cases.forEach( entry => {
+			totalCases.push(entry.cumCasesBySpecimenDate)
+		});
 	})
 	.then(() => {
 		updateUI(area);
@@ -208,8 +224,8 @@ function fetchData(area){
 	.catch( error => {
 		console.log("Error:", error);
 	});
-};
-
+	
+}
 let user_area
 function findLocation() {
 	if(navigator.geolocation) {
@@ -249,8 +265,8 @@ go_btn.addEventListener("click", function(){
 function findBySearch(searchTerm) {
 	let postcode = searchTerm.replace(/\s/g, '');
 	let area_list_cases_lower = area_list_cases.map(area => area.toLowerCase());
-	if(area_list_cases_lower.includes(searchTerm.toLowerCase())){
-				fetchData(searchTerm)
+	if(area_list_cases_lower.includes(searchTerm.trim().toLowerCase())){
+				fetchData(searchTerm.trim())
 	}
 	else {
 		fetch("https://api.postcodes.io/postcodes/" + postcode)
@@ -268,3 +284,5 @@ function findBySearch(searchTerm) {
 		});
 	}
 }
+
+
