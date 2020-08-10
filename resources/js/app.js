@@ -75,11 +75,11 @@ function updateStats() {
 		increasing_element.innerHTML = (percentage_change.toFixed(0) + "% Increase in Daily Cases");
 	}
 
-	if (percentage_change < -0.5){
-		decreasing_element.innerHTML = (-1*percentage_change.toFixed(0) + "% Decrease in Daily Cases");
+	else if (percentage_change < -0.5){
+	decreasing_element.innerHTML = (-1*percentage_change.toFixed(0) + "% Decrease in Daily Cases");
 	}
 
-	else{
+	else if (percentage_change >= -0.5 && percentage_change <= 0.5){
 		no_change_element.innerHTML = ("No % Change in Daily Cases");
 	}
 
