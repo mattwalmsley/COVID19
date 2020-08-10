@@ -71,15 +71,15 @@ function updateStats() {
 
 	percentage_change =  100 * ( ( ( active_cases_three_to_nine_days_ago -  active_cases_ten_to_sixteen_days_ago ) / 7 ) / ( active_cases_ten_to_sixteen_days_ago / 7) );
 
-	if (percentage_change > 0){
+	if (percentage_change > 0.5){
 		increasing_element.innerHTML = (percentage_change.toFixed(0) + "% Increase in Daily Cases");
 	}
 
-	if (percentage_change < 0){
-	decreasing_element.innerHTML = (-1*percentage_change.toFixed(0) + "% Decrease in Daily Cases");
+	if (percentage_change < -0.5){
+		decreasing_element.innerHTML = (-1*percentage_change.toFixed(0) + "% Decrease in Daily Cases");
 	}
 
-	if (percentage_change === 0){
+	else{
 		no_change_element.innerHTML = ("No % Change in Daily Cases");
 	}
 
