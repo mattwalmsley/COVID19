@@ -11,6 +11,8 @@ index.html lauches web based application showing cases per local administration 
 "Active Cases" are defined as lab confirmed cases in the past 7 days.
 "No Cases Cofirmed For...Days" may not be accurate if data sources have not been updated.
 
+Uses the newly launched API from api.coronavirus.data.gov.uk
+
 
 PYTHON APPLICATION:
 data.py is an application for requesting JSON data, logging cases/deaths and then displaying/saving graph of case/deaths vs time.
