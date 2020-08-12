@@ -1,6 +1,6 @@
 Privacy Policy
 
-(In addition to GitHub Privacy Statement - https://docs.github.com/en/github/site-policy/github-privacy-statement)
+(In addition to: GitHub Privacy Statement - https://docs.github.com/en/github/site-policy/github-privacy-statement, Google Privacy Policy - https://policies.google.com/privacy)
 
 Last updated: 4th August 2020
 
