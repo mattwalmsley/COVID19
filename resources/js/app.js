@@ -166,27 +166,27 @@ function fetchData(area){
 	let regions_lowercase = regions.map(area => area.toLowerCase());
 	if(ltla_lowercase.includes(area.toLowerCase())){
 		url = (
-			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=ltla;areaName=' + 
+			'https://cors-anywhere.herokuapp.com/https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=ltla;areaName=' + 
 			area + 
 			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
 			)
 	}
 	else if(regions_lowercase.includes(area.toLowerCase())){
 		url = (
-			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=region;areaName=' + 
+			'https://cors-anywhere.herokuapp.com/https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=region;areaName=' + 
 			area + 
 			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
 			)
 	}
 	else if((area.toLowerCase()) === "england"){
 		url = (
-			'https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation;areaName=' + 
+			'https://cors-anywhere.herokuapp.com/https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation;areaName=' + 
 			area + 
 			'&structure={"date":"date","areaName":"areaName","newCasesBySpecimenDate":"newCasesBySpecimenDate","cumCasesBySpecimenDate":"cumCasesBySpecimenDate"}'
 			)
 	}
 
-	fetch('https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure={"newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate"}&latestBy=date')
+	fetch('https://cors-anywhere.herokuapp.com/https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure={"newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate"}&latestBy=date')
 	.then( response => {
 		return response.json();
 	})
