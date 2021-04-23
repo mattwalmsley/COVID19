@@ -186,7 +186,7 @@ function fetchData(area){
 			)
 	}
 
-	fetch('https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure={"newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate"}&latestBy=date')
+	fetch('https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=overview&structure={"newCasesByPublishDate":"newCasesByPublishDate","cumCasesByPublishDate":"cumCasesByPublishDate"}&latestBy=newCasesByPublishDate')
 	.then( response => {
 		return response.json();
 	})
